@@ -1,0 +1,257 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce AppyPay Gateway\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-16 04:21+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.6.3; wp-6.0.3\n"
+"X-Domain: woocommerce-gateway-appypay"
+
+#: includes/payment-methods/class-wc-gateway-appypay-gpo.php:21
+#: includes/payment-methods/class-wc-gateway-appypay-umm.php:17
+msgid "Allows payments with custom gateway."
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-appypay-gpo.php:20
+msgid "AppyPay Multicaixa Express (GPO)"
+msgstr ""
+
+#: woocommerce-gateway-appypay.php:50
+#, php-format
+msgid ""
+"AppyPay requires WooCommerce %1$s or greater to be installed and active. "
+"WooCommerce %2$s is no longer supported."
+msgstr ""
+
+#: woocommerce-gateway-appypay.php:46
+#, php-format
+msgid ""
+"AppyPay requires WooCommerce to be installed and active. You can download %s "
+"here."
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-appypay-umm.php:16
+msgid "AppyPay UNITEL Mobile Money (UMM)"
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-appypay-gpo.php:213
+msgid "Checkout with GPO payment. "
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-appypay-gpo.php:188
+msgid "Checkout with GPO payment. but failed due to timeout issue"
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-appypay-gpo.php:192
+msgid "Checkout with GPO payment. waiting for confirmation"
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-appypay-umm.php:203
+msgid "Checkout with UMM payment. "
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-appypay-umm.php:181
+msgid "Checkout with UMM payment.  waiting for confirmation"
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-appypay-umm.php:179
+msgid "Checkout with UMM payment. but failed due to timeout issue"
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:24
+#: includes/admin/appypay-umm-settings.php:24
+msgid "Description"
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:11
+msgid "Enable AppyPay Multicaixa Express"
+msgstr ""
+
+#: includes/admin/appypay-umm-settings.php:11
+msgid "Enable AppyPay UNITEL Mobile Money"
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:68
+#: includes/admin/appypay-umm-settings.php:68
+msgid "Enable Test Mode"
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:10
+#: includes/admin/appypay-umm-settings.php:10
+msgid "Enable/Disable"
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:77
+#: includes/admin/appypay-umm-settings.php:77
+msgid "Get Client Id from your account."
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:48
+#: includes/admin/appypay-umm-settings.php:48
+msgid "Get Client Secret from your account."
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:62
+#: includes/admin/appypay-gpo-settings.php:98
+#: includes/admin/appypay-umm-settings.php:62
+#: includes/admin/appypay-umm-settings.php:98
+msgid "Get Payment Method from your account."
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:55
+#: includes/admin/appypay-gpo-settings.php:91
+#: includes/admin/appypay-umm-settings.php:55
+#: includes/admin/appypay-umm-settings.php:91
+msgid "Get Reference Key from your account."
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:41
+#: includes/admin/appypay-umm-settings.php:41
+msgid "Get Test Client Id from your account."
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:84
+#: includes/admin/appypay-umm-settings.php:84
+msgid "Get Test Client Secret from your account."
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://woocommerce.com/"
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:75
+#: includes/admin/appypay-umm-settings.php:75
+msgid "Live Client Id"
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:82
+#: includes/admin/appypay-umm-settings.php:82
+msgid "Live Client Secret"
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:96
+#: includes/admin/appypay-umm-settings.php:96
+msgid "Live Payment Method"
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:89
+#: includes/admin/appypay-umm-settings.php:89
+msgid "Live Resource"
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-appypay-gpo.php:61
+#: includes/payment-methods/class-wc-gateway-appypay-umm.php:57
+msgid "Mobile Number"
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:20
+msgid "Multicaixa Express"
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:70
+#: includes/admin/appypay-umm-settings.php:70
+msgid "Place the payment gateway in test mode using test API keys."
+msgstr ""
+
+#: includes/payment-methods/class-wc-gateway-appypay-gpo.php:86
+#: includes/payment-methods/class-wc-gateway-appypay-umm.php:83
+msgid "Please add your mobile number"
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:31
+#: includes/admin/appypay-gpo-settings.php:32
+#: includes/admin/appypay-gpo-settings.php:34
+#: includes/admin/appypay-umm-settings.php:31
+#: includes/admin/appypay-umm-settings.php:32
+#: includes/admin/appypay-umm-settings.php:34
+msgid "Save Mobile Number For Future Use"
+msgstr ""
+
+#. Description of the plugin
+msgid "Take payments on your store using AppyPay."
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:39
+#: includes/admin/appypay-umm-settings.php:39
+msgid "Test Client Id"
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:46
+#: includes/admin/appypay-umm-settings.php:46
+msgid "Test Client Secret"
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:67
+#: includes/admin/appypay-umm-settings.php:67
+msgid "Test mode"
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:60
+#: includes/admin/appypay-umm-settings.php:60
+msgid "Test Payment Method"
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:53
+#: includes/admin/appypay-umm-settings.php:53
+msgid "Test Resource"
+msgstr ""
+
+#: woocommerce-gateway-appypay.php:94
+msgid ""
+"Thank you, Your order has been received but we are waiting for your "
+"confirmation."
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:26
+#: includes/admin/appypay-umm-settings.php:26
+msgid "This controls the description which the user sees during checkout."
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:19
+#: includes/admin/appypay-umm-settings.php:19
+msgid "This controls the title which the user sees during checkout."
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:17
+#: includes/admin/appypay-umm-settings.php:17
+msgid "Title"
+msgstr ""
+
+#: includes/admin/appypay-umm-settings.php:20
+msgid "UNITEL Mobile Money"
+msgstr ""
+
+#: woocommerce-gateway-appypay.php:123
+msgid ""
+"Waiting for your confirmation on selected payment method. You have 90 "
+"seconds to confirm."
+msgstr ""
+
+#. Author of the plugin
+msgid "WooCommerce"
+msgstr ""
+
+#. Name of the plugin
+msgid "WooCommerce AppyPay Gateway"
+msgstr ""
+
+#: includes/admin/appypay-gpo-settings.php:27
+msgid ""
+"You have 90 seconds to authorize the payment using Multicaixa Express "
+"associated to phone number provided."
+msgstr ""
+
+#: includes/admin/appypay-umm-settings.php:27
+msgid ""
+"You have 90 seconds to authorize the payment using UNITEL Mobile Money "
+"associated to phone number provided."
+msgstr ""

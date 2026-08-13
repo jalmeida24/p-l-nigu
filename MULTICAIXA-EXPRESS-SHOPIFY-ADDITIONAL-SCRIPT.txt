@@ -1,0 +1,84 @@
+{% if checkout.order %}
+<!-- ##### GET paymentMethod and paymentAmount ##### -->
+	{% assign paymentMethod = '' %}
+	{% for transaction in transactions %}
+		{% assign gateway = transaction.gateway | upcase %}
+        {% if gateway | strip == "MULTICAIXA EXPRESS" %}
+            {% assign paymentMethod = gateway %}
+            {% assign paymentAmount  = transaction.amount | money_without_currency %} 
+		{% endif %}
+	{% endfor %}
+<!-- ##### END OF GET paymentMethod and paymentAmount ##### -->
+
+<!-- ##### FORMAT paymentAmount for decimal dot ##### -->
+    {% assign count = 0 %}
+    {% assign result = '' %}
+    {% assign num = paymentAmount | size | minus: 1 %}
+    {% assign range = (0..num) %}
+
+    {% for i in range %}
+        {% assign paymentAmountChar = paymentAmount | slice: i %}
+        {% if paymentAmountChar == "." or paymentAmountChar == "," %}
+            {% assign count  = count | plus: 1 %}
+        {% endif %}
+    {% endfor %}
+
+    {% if count > 1 %}
+        {% for i in range %}
+            {% assign paymentAmountChar = paymentAmount | slice: i %}      
+            {% if count > 1 %}
+                {% if paymentAmountChar == "." or paymentAmountChar == "," %}
+                    {% assign count  = count | minus: 1 %}
+                {% else %}
+                    {% assign result = result | append: paymentAmountChar %}
+                {% endif %}
+            {% else %}
+                {% assign result = result | append: paymentAmountChar %}
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        {% assign result = paymentAmount %}
+    {% endif %}
+
+    {% assign result = result | replace: ",", "." %}
+<!-- ##### END OF FORMAT paymentAmount for decimal dot ##### -->
+
+    {% if paymentMethod | strip == "MULTICAIXA EXPRESS" %}
+        <div 
+            id="appyPay-widget"
+        >
+            <script async 
+                id="appyPay-charges-widget-v2" 
+                amount="{{result}}"
+                paymentDescription="{{order_number}}" 
+                referenceNumber="{{order_id}}" 
+                paymentMethod="[INSERT_CLIENT_PAYMENT_METHOD_IDENTIFIER]" 
+                requestType="sync"
+                lang="pt-PT"
+                src="https://appypay.co.ao/assets/chargesWidgetV1_2/main.js" 
+                redirectURI="{{shop.secure_url}}"
+            ></script>
+            <div id="appyPay-charges-v2"></div>
+        </div>
+        <style>
+            body {
+                justify-content: inherit !important;
+            }
+        </style>
+	{% endif %}
+
+{% else %}
+	
+	<!-- ##### if order not set reload page ##### -->
+	<script>
+		window.onload = function() {
+		if(!window.location.href.includes("details")){
+			 setTimeout(() => {  
+				  var url  = window.location.href + "?details";
+				  window.location.href =url;
+			  }, 2000);
+		};
+	}
+	</script>
+	
+{% endif %}

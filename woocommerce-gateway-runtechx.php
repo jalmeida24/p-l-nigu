@@ -123,7 +123,6 @@ function woocommerce_gateway_run_techx() {
 					// add field setting here
 					//add_filter( 'woocommerce_billing_fields', [ $this, 'checkout_update_email_field_priority' ], 50 );
 				}
-				require_once dirname(__FILE__) . '/includes/payment-methods/class-wc-gateway-run_techx-umm.php';
 				require_once dirname(__FILE__) . '/includes/payment-methods/class-wc-gateway-run_techx-gpo.php';
 
 			}		
@@ -151,7 +150,6 @@ function woocommerce_gateway_run_techx() {
 			
 			public function add_gateways( $methods ) {	
 				$methods[] = WC_Gateway_GPO::class;
-                $methods[] = WC_Gateway_UMM::class;
 				return $methods;
 			}
 			public function get_order_data() {

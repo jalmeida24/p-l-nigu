@@ -16,5 +16,5 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 if ( defined( 'WC_REMOVE_ALL_DATA' ) && true === WC_REMOVE_ALL_DATA ) {
 	// Delete options.
 	
-//	delete_option( 'woocommerce_appypay_settings' );
+//	delete_option( 'woocommerce_run_techx_settings' );
 }

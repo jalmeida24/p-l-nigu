@@ -45,20 +45,20 @@
 
     {% if paymentMethod | strip == "MULTICAIXA EXPRESS" %}
         <div 
-            id="appyPay-widget"
+            id="runTechx-widget"
         >
             <script async 
-                id="appyPay-charges-widget-v2" 
+                id="runTechx-charges-widget-v2" 
                 amount="{{result}}"
                 paymentDescription="{{order_number}}" 
                 referenceNumber="{{order_id}}" 
                 paymentMethod="[INSERT_CLIENT_PAYMENT_METHOD_IDENTIFIER]" 
                 requestType="sync"
                 lang="pt-PT"
-                src="https://appypay.co.ao/assets/chargesWidgetV1_2/main.js" 
+                src="https://run_techx.co.ao/assets/chargesWidgetV1_2/main.js" 
                 redirectURI="{{shop.secure_url}}"
             ></script>
-            <div id="appyPay-charges-v2"></div>
+            <div id="runTechx-charges-v2"></div>
         </div>
         <style>
             body {

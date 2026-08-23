@@ -7,8 +7,8 @@ return apply_filters(
 	'wc_run_techx_gpo_settings',
 	[
 		'gpo_enabled'     => [
-			'title'       => __( 'Enable/Disable', 'woocommerce-gateway-run_techx' ),
-			'label'       => __( 'Enable RunTechx Multicaixa Express', 'woocommerce-gateway-run_techx' ),
+			'title'       => __( 'Enable/Disable', 'woocommerce-gateway-appypay' ),
+			'label'       => __( 'Enable Payment Method', 'woocommerce-gateway-appypay' ),
 			'type'        => 'checkbox',
 			'description' => '',
 			'default'     => 'no',

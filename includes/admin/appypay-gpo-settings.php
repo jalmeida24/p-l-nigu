@@ -8,7 +8,7 @@ return apply_filters(
 	[
 		'gpo_enabled'     => [
 			'title'       => __( 'Enable/Disable', 'woocommerce-gateway-appypay' ),
-			'label'       => __( 'Enable AppyPay Multicaixa Express', 'woocommerce-gateway-appypay' ),
+			'label'       => __( 'Enable Payment Method', 'woocommerce-gateway-appypay' ),
 			'type'        => 'checkbox',
 			'description' => '',
 			'default'     => 'no',

@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: WooCommerce AppyPay Gateway
+ * Plugin Name: Gateway Pagamentos GPO Woocommerce Angola
  * Plugin URI: 
  * Description: Take payments on your store using AppyPay.
  * Author: WooCommerce
  * Author URI: https://woocommerce.com/
- * Version: 1.0.0
+ * Version: 3.1.2
  * Requires at least: 5.7
  * Tested up to: 6.0
  * WC requires at least: 6.2
@@ -39,7 +39,12 @@ define('WC_APPYPAY_PAY_LINK_PROD', "https://api.appypay.co.ao/".PAYVERSION."/cha
 ini_set("max_execution_time", 3600);
 ini_set("max_input_time", 3600);
 
-
+add_action( 'before_woocommerce_init', function() {
+	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
+	}
+} );
 
 
 function woocommerce_appypay_missing_wc_notice() {
@@ -88,11 +93,27 @@ function woocommerce_gateway_appypay() {
 				add_action('wp_enqueue_scripts', [$this, 'add_scripts_css']);
 				add_action('wp_head', [$this,'appypay_woocommerce_checkout_spinner'], 1000);
 				add_filter( 'woocommerce_thankyou_order_received_text', [$this,'d4tw_custom_ty_msg'],20,2);
-				
-				
+				add_action( 'woocommerce_blocks_loaded', [ $this, 'register_blocks_support' ] );
 
 			}
-			
+
+			public function register_blocks_support() {
+				if ( ! class_exists( '\Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' ) ) {
+					return;
+				}
+
+				require_once dirname( __FILE__ ) . '/includes/blocks/class-wc-appypay-gpo-blocks-support.php';
+				require_once dirname( __FILE__ ) . '/includes/blocks/class-wc-appypay-widget-blocks-support.php';
+
+				add_action(
+					'woocommerce_blocks_payment_method_type_registration',
+					function( $payment_method_registry ) {
+						$payment_method_registry->register( new WC_AppyPay_GPO_Blocks_Support() );
+						$payment_method_registry->register( new WC_AppyPay_Widget_Blocks_Support() );
+					}
+				);
+			}
+
 
     		public function d4tw_custom_ty_msg ( $thank_you_msg,$order ) {
             if($order->get_status()==="completed")
@@ -123,10 +144,11 @@ function woocommerce_gateway_appypay() {
 					// add field setting here
 					//add_filter( 'woocommerce_billing_fields', [ $this, 'checkout_update_email_field_priority' ], 50 );
 				}
-				require_once dirname(__FILE__) . '/includes/payment-methods/class-wc-gateway-appypay-umm.php';
+				//equire_once dirname(__FILE__) . '/includes/payment-methods/class-wc-gateway-appypay-umm.php';
 				require_once dirname(__FILE__) . '/includes/payment-methods/class-wc-gateway-appypay-gpo.php';
+				require_once dirname(__FILE__) . '/includes/payment-methods/class-wc-gateway-appypay-widget.php';
 
-			}		
+			}
 			public function appypay_woocommerce_checkout_spinner()
 			{ 				
 				?>
@@ -149,9 +171,9 @@ function woocommerce_gateway_appypay() {
 <?php
 			}
 			
-			public function add_gateways( $methods ) {	
+			public function add_gateways( $methods ) {
 				$methods[] = WC_Gateway_GPO::class;
-                $methods[] = WC_Gateway_UMM::class;
+				$methods[] = WC_Gateway_Widget::class;
 				return $methods;
 			}
 			public function get_order_data() {
@@ -198,10 +220,11 @@ function woocommerce_gateway_appypay() {
 				register_rest_route(
 					'getorderstatus/v1', '/getstatus', [
 						'methods' => 'POST',
-						'callback' => [$this, 'get_order_data'],        
+						'callback' => [$this, 'get_order_data'],       
+						'permission_callback' => '__return_true' // Torna a rota pública
 					]
-				);				
-			}		
+				);
+			}
 		}
 		$plugin = WC_AppyPay::get_instance();
 	}

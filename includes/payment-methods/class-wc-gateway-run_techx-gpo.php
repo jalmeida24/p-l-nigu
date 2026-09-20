@@ -120,7 +120,7 @@ class WC_Gateway_GPO extends WC_Payment_Gateway
 		$gpo_saved_mobile_number = $gpo_setting['gpo_saved_mobile_number'];
 		$curl = curl_init();
 
-		curl_setopt_array($curl, array(
+		/*curl_setopt_array($curl, array(
 			CURLOPT_URL => $authlink,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_ENCODING => '',
@@ -136,17 +136,19 @@ class WC_Gateway_GPO extends WC_Payment_Gateway
 			),
 		));
 
-		$response = curl_exec($curl);
+		$response = curl_exec($curl);*/
 
 		curl_close($curl);
-		$response = json_decode($response, true);
+		//$response = json_decode($response, true);
 		//	echo "<pre>";print_r($response);echo "</pre>";
-		if (isset($response['access_token'])) {
+		//		if (isset($response['access_token'])) {
+
+		if (true) {
 			$string = $this->getRandNum(14);
 			//$string = bin2hex($bytes);
 
 
-			$postfield = [
+			/*$postfield = [
 				"capture" => true,
 				"amount" => floatval(sprintf('%0.2f', $ordertotal)),
 				"orderOrigin" => 0,
@@ -154,6 +156,15 @@ class WC_Gateway_GPO extends WC_Payment_Gateway
 				"description" => "POSTMAN",
 				"merchantTransactionId" => $string,
 				"paymentInfo" => ["phoneNumber" => $_POST['gpo_mobile']]
+			];*/
+
+			$postfield = [
+				"order_id" => "" . $order_id,
+				"total_amount" => floatval(sprintf('%0.2f', $ordertotal)),
+				"client_secret" => 0,
+				"client_id" => $gpo_payment_method,
+				"merchantTransactionId" => $string,
+				///"paymentInfo" => ["phoneNumber" => $_POST['gpo_mobile']]
 			];
 
 			$body = wp_json_encode($postfield);
@@ -175,7 +186,8 @@ class WC_Gateway_GPO extends WC_Payment_Gateway
 				CURLOPT_POSTFIELDS => $body,
 				CURLOPT_HTTPHEADER => [
 					"Accept: application/json",
-					"Authorization: Bearer " . $response['access_token'] . "",
+					"Authorization: Bearer ",
+					//"Authorization: Bearer " . $response['access_token'] . "",
 					"Content-Type: application/json"
 				],
 			]);

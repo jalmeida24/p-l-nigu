@@ -28,7 +28,7 @@ class WC_Gateway_GPO extends WC_Payment_Gateway
 		$this->init_form_fields();
 		$this->init_settings();
 		$this->has_fields = true;
-		$this->icon = apply_filters('woocommerce_custom_gateway_icon', WC_APPYPAY_PLUGIN_URL . "/images/" . $this->id . ".png");
+		$this->icon = apply_filters('woocommerce_custom_gateway_icon', WC_RUNTECHX_PLUGIN_URL . "/images/" . $this->id . ".png");
 
 		$this->title = $this->get_option('gpo_title');
 		$this->description = $this->get_option('gpo_description');
@@ -51,10 +51,11 @@ class WC_Gateway_GPO extends WC_Payment_Gateway
 
 		}
 		add_action('woocommerce_update_options_payment_gateways_' . $this->id, [$this, 'process_admin_options']);
+		add_action('woocommerce_receipt_' . $this->id, [$this, 'receipt_page']);
 	}
 	public function init_form_fields()
 	{
-		$this->form_fields = require WC_APPYPAY_PLUGIN_PATH . '/includes/admin/appypay-gpo-settings.php';
+		$this->form_fields = require WC_RUNTECHX_PLUGIN_PATH . '/includes/admin/runtechx-gpo-settings.php';
 	}
 
 	public function payment_fields()
@@ -75,180 +76,102 @@ class WC_Gateway_GPO extends WC_Payment_Gateway
 		$description = __('You must add the following webhook endpoint <b>' . site_url("/wp-json/getorderstatus/v1/getstatus") . '</b> to your AppyPay account settings ', 'woocommerce-gateway-stripe');
 		return $description;
 	}
-	public function getRandNum($len)
-	{
-		$str = mt_rand(1, 9);
-		for ($i = 0; $i < $len - 1; $i++) {
-			$str .= mt_rand(0, 9);
-		}
-		return $str;
-	}
-
 	public function process_payment($order_id)
 	{
-
-		if ($_POST['payment_method'] != 'appypay_gpo') {
+		if (isset($_POST['payment_method']) && $_POST['payment_method'] !== self::ID) {
 			return;
 		}
 
-		if (!isset($_POST['gpo_mobile']) || empty($_POST['gpo_mobile'])) {
-			wc_add_notice(__('Please add your mobile number', 'woocommerce-gateway-run_techx'), 'error');
-		}
-
-
 		$order = wc_get_order($order_id);
 		$ordertotal = $order->get_total();
-		//exit;
 
 		$gpo_setting = get_option('woocommerce_appypay_gpo_settings');
 
 		if ($gpo_setting['gpo_testmode'] === "yes") {
-			$paymentlink = WC_APPYPAY_PAY_LINK_TEST;
-			$authlink = WC_APPYPAY_AUTH_LINK_TEST;
 			$client_id = $gpo_setting['gpo_test_client_id'];
 			$client_secret = $gpo_setting['gpo_test_secret_key'];
-			$reference_key = $gpo_setting['gpo_test_reference_key'];
-			$gpo_payment_method = $gpo_setting['gpo_test_payment_method'];
 		} else {
-			$paymentlink = WC_APPYPAY_PAY_LINK_PROD;
-			$authlink = WC_APPYPAY_AUTH_LINK_PROD;
 			$client_id = $gpo_setting['gpo_client_id'];
 			$client_secret = $gpo_setting['gpo_client_secret'];
-			$reference_key = $gpo_setting['gpo_reference_key'];
-			$gpo_payment_method = $gpo_setting['gpo_payment_method'];
 		}
-		$gpo_saved_mobile_number = $gpo_setting['gpo_saved_mobile_number'];
-		$curl = curl_init();
 
-		/*curl_setopt_array($curl, array(
-			CURLOPT_URL => $authlink,
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_ENCODING => '',
-			CURLOPT_MAXREDIRS => 10,
-			CURLOPT_TIMEOUT => 0,
-			CURLOPT_FOLLOWLOCATION => true,
-			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-			CURLOPT_CUSTOMREQUEST => 'GET',
-			CURLOPT_SSL_VERIFYPEER => false,
-			CURLOPT_POSTFIELDS => 'grant_type=client_credentials&client_id=' . $client_id . '&client_secret=' . $client_secret . '&resource=' . $reference_key,
-			CURLOPT_HTTPHEADER => array(
-				'Content-Type: application/x-www-form-urlencoded',
-			),
-		));
+		$address = ! empty($gpo_setting['gpo_api_address']) ? untrailingslashit($gpo_setting['gpo_api_address']) : 'http://localhost:8081';
+		$iframe_base = ! empty($gpo_setting['gpo_iframe_url']) ? $gpo_setting['gpo_iframe_url'] : 'https://cerpagamentonline.emis.co.ao/online-payment-gateway/webframe/frame/invalid';
 
-		$response = curl_exec($curl);*/
+		$postfield = [
+			"order_id" => (string) $order_id,
+			"total_amount" => floatval(sprintf('%0.2f', $ordertotal)),
+			"client_secret" => $client_secret,
+			"client_id" => $client_id,
+		];
 
-		curl_close($curl);
-		//$response = json_decode($response, true);
-		//	echo "<pre>";print_r($response);echo "</pre>";
-		//		if (isset($response['access_token'])) {
+		$post_response = wp_remote_post($address . '/payment-order', [
+			'timeout' => WC_RUNTECHX_TIMEOUT,
+			'headers' => ['Content-Type' => 'application/json'],
+			'body' => wp_json_encode($postfield),
+		]);
 
-		if (true) {
-			$string = $this->getRandNum(14);
-			//$string = bin2hex($bytes);
-
-
-			/*$postfield = [
-				"capture" => true,
-				"amount" => floatval(sprintf('%0.2f', $ordertotal)),
-				"orderOrigin" => 0,
-				"paymentMethod" => $gpo_payment_method,
-				"description" => "POSTMAN",
-				"merchantTransactionId" => $string,
-				"paymentInfo" => ["phoneNumber" => $_POST['gpo_mobile']]
-			];*/
-
-			$postfield = [
-				"order_id" => "" . $order_id,
-				"total_amount" => floatval(sprintf('%0.2f', $ordertotal)),
-				"client_secret" => 0,
-				"client_id" => $gpo_payment_method,
-				"merchantTransactionId" => $string,
-				///"paymentInfo" => ["phoneNumber" => $_POST['gpo_mobile']]
-			];
-
-			$body = wp_json_encode($postfield);
-
-			ignore_user_abort(true);
-
-			$curlpayment = curl_init();
-
-
-			curl_setopt_array($curlpayment, [
-				CURLOPT_URL => $paymentlink,
-				CURLOPT_RETURNTRANSFER => true,
-				CURLOPT_ENCODING => "",
-				CURLOPT_MAXREDIRS => 10,
-				CURLOPT_TIMEOUT => 90,
-				CURLOPT_FOLLOWLOCATION => true,
-				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-				CURLOPT_CUSTOMREQUEST => "POST",
-				CURLOPT_POSTFIELDS => $body,
-				CURLOPT_HTTPHEADER => [
-					"Accept: application/json",
-					"Authorization: Bearer ",
-					//"Authorization: Bearer " . $response['access_token'] . "",
-					"Content-Type: application/json"
-				],
-			]);
-
-			$responsepayment = curl_exec($curlpayment);
-			$err = curl_error($curlpayment);
-			$info = curl_getinfo($curlpayment);
-			$responsepayment = json_decode($responsepayment, true);
-			$responsemessage = $responsepayment['responseStatus']['message'];
-
-			if ($err || $info['http_code'] == "401") {
-				$info = curl_getinfo($curlpayment);
-				if ($info['total_time'] >= WC_APPYPAY_TIMEOUT) {
-					$order->update_status("cancelled", __($responsemessage, 'woocommerce-gateway-appypay'));
-				} else {
-					$order->update_status("failed", __('Checkout with GPO payment. waiting for confirmation', 'woocommerce-gateway-appypay'));
-
-				}
-				curl_close($curlpayment);
-				return array(
-					'result' => 'success',
-					'redirect' => $this->get_return_url($order),
-				);
-
-			} else {
-
-
-				$status = $responsepayment['responseStatus']['successful'];
-				$code = $responsepayment['responseStatus']['code'];
-				$ord_id = $responsepayment['id'];
-				$responsemessage = $responsepayment['responseStatus']['message'];
-
-
-				if (!empty($ord_id) && isset($ord_id)) {
-					curl_close($curlpayment);
-
-					if ($status) {
-						$order->update_status("completed", __($responsemessage, 'woocommerce-gateway-appypay'));
-					} else if (!$status) {
-						$order->update_status("cancelled", __($responsemessage, 'woocommerce-gateway-appypay'));
-					} else {
-						$order->update_status("failed", __($responsemessage, 'woocommerce-gateway-appypay'));
-					}
-					$order->update_meta_data('merchant_id', $string);
-					$order->update_meta_data('order_id', $ord_id);
-
-
-					if ($gpo_saved_mobile_number) {
-						$order->update_meta_data('mobile', $_POST['gpo_mobile']);
-					}
-					$order->save();
-					$order->reduce_order_stock();
-					WC()->cart->empty_cart();
-					return array(
-						'result' => 'success',
-						'redirect' => $this->get_return_url($order),
-					);
-
-
-				}
-			}
+		if (is_wp_error($post_response) || wp_remote_retrieve_response_code($post_response) >= 300) {
+			$order->update_status('failed', __('Could not submit the payment order to GPO.', 'woocommerce-gateway-run_techx'));
+			wc_add_notice(__('Payment could not be started. Please try again.', 'woocommerce-gateway-run_techx'), 'error');
+			return;
 		}
+
+		$order->update_meta_data('order_id', (string) $order_id);
+		$order->save();
+
+		sleep(WC_RUNTECHX_GPO_STATUS_DELAY);
+
+		$status_response = wp_remote_get($address . '/payment-order/' . rawurlencode($order_id), [
+			'timeout' => WC_RUNTECHX_TIMEOUT,
+		]);
+
+		if (is_wp_error($status_response) || wp_remote_retrieve_response_code($status_response) >= 300) {
+			$order->update_status('failed', __('Could not confirm the payment order status with GPO.', 'woocommerce-gateway-run_techx'));
+			wc_add_notice(__('Payment could not be confirmed. Please try again.', 'woocommerce-gateway-run_techx'), 'error');
+			return;
+		}
+
+		$status_data = json_decode(wp_remote_retrieve_body($status_response), true);
+		$payment_link = isset($status_data['payment_link']) ? $status_data['payment_link'] : '';
+
+		if (empty($payment_link)) {
+			$order->update_status('failed', __('GPO did not return a payment link.', 'woocommerce-gateway-run_techx'));
+			wc_add_notice(__('Payment could not be started. Please try again.', 'woocommerce-gateway-run_techx'), 'error');
+			return;
+		}
+
+		$iframe_url = add_query_arg('token', rawurlencode($payment_link), $iframe_base);
+
+		$order->update_meta_data('gpo_status', isset($status_data['status']) ? $status_data['status'] : '');
+		$order->update_meta_data('gpo_payment_link', $payment_link);
+		$order->update_meta_data('gpo_iframe_url', $iframe_url);
+
+		if ($gpo_setting['gpo_saved_mobile_number'] === 'yes' && ! empty($_POST['gpo_mobile'])) {
+			$order->update_meta_data('mobile', sanitize_text_field(wp_unslash($_POST['gpo_mobile'])));
+		}
+
+		$order->update_status('on-hold', isset($status_data['current_status']) ? $status_data['current_status'] : __('Awaiting confirmation from GPO.', 'woocommerce-gateway-run_techx'));
+		$order->save();
+
+		return array(
+			'result' => 'success',
+			'redirect' => $order->get_checkout_payment_url(true),
+		);
+	}
+
+	public function receipt_page($order_id)
+	{
+		$order = wc_get_order($order_id);
+		$iframe_url = $order->get_meta('gpo_iframe_url');
+
+		if (empty($iframe_url)) {
+			echo '<p>' . esc_html__('Unable to load the payment page. Please contact the store.', 'woocommerce-gateway-run_techx') . '</p>';
+			return;
+		}
+
+		echo '<div id="gpo-payment-frame">';
+		echo '<iframe src="' . esc_url($iframe_url) . '" width="100%" height="600" frameborder="0" allow="payment"></iframe>';
+		echo '</div>';
 	}
 }

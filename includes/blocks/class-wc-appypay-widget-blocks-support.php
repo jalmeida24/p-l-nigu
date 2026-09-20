@@ -28,7 +28,7 @@ class WC_AppyPay_Widget_Blocks_Support extends AbstractPaymentMethodType {
 		if ( ! wp_script_is( $handle, 'registered' ) ) {
 			wp_register_script(
 				$handle,
-				WC_APPYPAY_PLUGIN_URL . '/assets/js/blocks/widget.js',
+				WC_RUNTECHX_PLUGIN_URL . '/assets/js/blocks/widget.js',
 				[ 'wc-blocks-registry', 'wc-settings', 'wp-element', 'wp-html-entities' ],
 				'1.0.0',
 				true

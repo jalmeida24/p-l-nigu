@@ -29,6 +29,7 @@ define( 'WC_RUNTECHX_FUTURE_MIN_WC_VER', '6.3' );
 define( 'WC_RUNTECHX_MAIN_FILE', __FILE__ );
 define( 'WC_RUNTECHX_ABSPATH', __DIR__ . '/' );
 define('WC_RUNTECHX_TIMEOUT', 90);
+define('WC_RUNTECHX_GPO_STATUS_DELAY', 2);
 
 define( 'WC_RUNTECHX_PLUGIN_URL', untrailingslashit( plugins_url( basename( plugin_dir_path( __FILE__ ) ), basename( __FILE__ ) ) ) );
 define( 'WC_RUNTECHX_PLUGIN_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
@@ -133,7 +134,7 @@ function woocommerce_gateway_run_techx() {
 
 			public function add_scripts_css()
 			{
-				wp_register_style('wc-run_techx-css', plugins_url('assets/css/run_techx.css', WC_RUNTECHX_MAIN_FILE), [],"1.0.0");
+				wp_register_style('wc-run_techx-css', plugins_url('assets/css/runtechx.css', WC_RUNTECHX_MAIN_FILE), [],"1.0.0");
 				wp_enqueue_style('wc-run_techx-css');
 
 			}
@@ -144,8 +145,7 @@ function woocommerce_gateway_run_techx() {
 					// add field setting here
 					//add_filter( 'woocommerce_billing_fields', [ $this, 'checkout_update_email_field_priority' ], 50 );
 				}
-				//equire_once dirname(__FILE__) . '/includes/payment-methods/class-wc-gateway-appypay-umm.php';
-				require_once dirname(__FILE__) . '/includes/payment-methods/class-wc-gateway-appypay-gpo.php';
+				require_once dirname(__FILE__) . '/includes/payment-methods/class-wc-gateway-run_techx-gpo.php';
 				require_once dirname(__FILE__) . '/includes/payment-methods/class-wc-gateway-appypay-widget.php';
 
 			}

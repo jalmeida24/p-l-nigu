@@ -34,7 +34,26 @@ return apply_filters(
 			'description' => __( 'Save Mobile Number For Future Use', 'woocommerce-gateway-run_techx' ),
 			'default'     => 'yes',
 			'desc_tip'    => true,
-		],	
+		],
+		'gpo_api'            => [
+			'title'       => __( 'GPO API', 'woocommerce-gateway-run_techx' ),
+			'type'        => 'title',
+			'description' => __( 'Endpoints used to submit and confirm payment orders with GPO.', 'woocommerce-gateway-run_techx' ),
+		],
+		'gpo_api_address' => [
+			'title'       => __( 'GPO API Address', 'woocommerce-gateway-run_techx' ),
+			'type'        => 'text',
+			'description' => __( 'Base URL of the GPO payment order API (e.g. http://localhost:8081). Used to POST new payment orders and GET their status.', 'woocommerce-gateway-run_techx' ),
+			'default'     => 'http://localhost:8081',
+			'desc_tip'    => true,
+		],
+		'gpo_iframe_url' => [
+			'title'       => __( 'Payment Iframe URL', 'woocommerce-gateway-run_techx' ),
+			'type'        => 'text',
+			'description' => __( 'Base URL of the EMIS/Multicaixa Express payment page. The payment link token is appended as ?token=... and the page is shown in an iframe.', 'woocommerce-gateway-run_techx' ),
+			'default'     => 'https://cerpagamentonline.emis.co.ao/online-payment-gateway/webframe/frame/invalid',
+			'desc_tip'    => true,
+		],
 		'gpo_test_client_id' => [
 			'title'       => __( 'Test Client Id', 'woocommerce-gateway-run_techx' ),
 			'type'        => 'text',

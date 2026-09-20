@@ -27,7 +27,7 @@ class WC_Gateway_Widget extends WC_Payment_Gateway {
 		$this->init_form_fields();
 		$this->init_settings();
 		$this->has_fields = false;
-		$this->icon        = apply_filters( 'woocommerce_custom_gateway_icon', WC_APPYPAY_PLUGIN_URL . "/images/" . $this->id . ".png" );
+		$this->icon        = apply_filters( 'woocommerce_custom_gateway_icon', WC_RUNTECHX_PLUGIN_URL . "/images/" . $this->id . ".png" );
 
 		$this->title             = $this->get_option( 'widget_title' );
 		$this->description       = $this->get_option( 'widget_description' );
@@ -45,7 +45,7 @@ class WC_Gateway_Widget extends WC_Payment_Gateway {
 	}
 
 	public function init_form_fields() {
-		$this->form_fields = require WC_APPYPAY_PLUGIN_PATH . '/includes/admin/appypay-widget-settings.php';
+		$this->form_fields = require WC_RUNTECHX_PLUGIN_PATH . '/includes/admin/appypay-widget-settings.php';
 	}
 
 	public function display_webhook_description() {

@@ -92,7 +92,7 @@ function woocommerce_gateway_run_techx() {
 
 				add_action( 'rest_api_init', [ $this, 'register_routes' ] );
 				add_action('wp_enqueue_scripts', [$this, 'add_scripts_css']);
-				add_action('wp_head', [$this,'run_techx_woocommerce_checkout_spinner'], 1000);
+				add_action('wp_head', [$this,'appypay_woocommerce_checkout_spinner'], 1000);
 				add_filter( 'woocommerce_thankyou_order_received_text', [$this,'d4tw_custom_ty_msg'],20,2);
 				add_action( 'woocommerce_blocks_loaded', [ $this, 'register_blocks_support' ] );
 
